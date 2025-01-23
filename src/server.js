@@ -1,3 +1,5 @@
+// impotant note this file is only for development purposes we will use app.js for production
+
 import dotenv from "dotenv";
 import app from "./app.js";
 
