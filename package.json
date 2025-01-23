@@ -1,6 +1,14 @@
 {
+  "name": "visit-ksamil-backend",
+  "version": "1.0.0",
+  "description": "Backend for visit-ksamil data with Firebase Firestore",
   "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
   "dependencies": {
+    "start": "node src/server.js",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
