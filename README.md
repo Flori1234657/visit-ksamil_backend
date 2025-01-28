@@ -4,7 +4,8 @@ This is a simple backend server built with **Express** and **Firebase Firestore*
 
 ## Features
 
-- **Fetch data**: Get all data stored in Firestore articles,attractions,images.
+- **Fetch data**: Get all data stored in Firestore articles,attractions.
+- **Post data**: Post subscriptions data in Firestore.
 - **Pagination support**: Fetch data in pages (e.g., 3 articles per page).
 - **Environment variables**: Store sensitive data like API keys and configuration securely.
 
@@ -20,15 +21,22 @@ This is a simple backend server built with **Express** and **Firebase Firestore*
 Follow these steps to set up the project locally.
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/Flori1234657/visit-ksamil_backend.git
    cd visit-ksamil_backend
 
+   ```
+
 2. Install dependencies:
+
    ```bash
    npm install
 
+   ```
+
 3. Create a .env file in the root directory and add your Firebase configuration:
+
    ```bash
    FIREBASE_API_KEY=your-api-key
    FIREBASE_AUTH_DOMAIN=your-auth-domain
@@ -37,15 +45,18 @@ Follow these steps to set up the project locally.
    FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
    FIREBASE_APP_ID=your-app-id
 
+   ```
+
 4. Run the server locally:
    ```bash
    npm start
-
+   ```
 
 ## API Endpoints
 
 - **GET /articles || attractions**
 - **GET /articles/paginated?limitSize=3**: Fetches articles with pagination. By specifying the limitSize query parameter, you can control how many articles are fetched per page.
 - **GET /articles/paginated?limitSize=3&lastDoc=article3**: Fetches the next set of articles starting from the document with ID article3.
+- **POST /subscribe**
 
 ## Author -- Florian Dollani
