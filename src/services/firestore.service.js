@@ -8,6 +8,8 @@ import {
   getDocs,
   addDoc,
   where,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import firebaseApp from "../config/firebase.config.js";
 
@@ -57,6 +59,17 @@ export const fetchPaginatedArticles = async (limitSize, lastDocId = null) => {
 
   // Only return the document ID of the last document
   return { articles, lastDoc: lastVisible ? lastVisible.id : null };
+};
+
+export const fetchArticleById = async (articleId) => {
+  const articleRef = doc(db, "articles", articleId);
+  const articleSnapshot = await getDoc(articleRef);
+
+  if (!articleSnapshot.exists()) {
+    return null;
+  }
+
+  return { id: articleSnapshot.id, ...articleSnapshot.data() };
 };
 
 export const fetchPaginatedAttractions = async (
