@@ -57,6 +57,7 @@ Follow these steps to set up the project locally.
 - **GET /articles || attractions**
 - **GET /articles/paginated?limitSize=3**: Fetches articles with pagination. By specifying the limitSize query parameter, you can control how many articles are fetched per page.
 - **GET /articles/paginated?limitSize=3&lastDoc=article3**: Fetches the next set of articles starting from the document with ID article3.
+- **GET /articles/:id**: Fetch only a single article.
 - **POST /subscribe**
 
 ## Author -- Florian Dollani
