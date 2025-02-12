@@ -8,10 +8,11 @@
     "start": "node src/server.js"
   },
   "dependencies": {
-    "start": "node src/server.js",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "firebase": "^11.2.0"
+    "firebase": "^11.2.0",
+    "node-cache": "^5.1.2",
+    "start": "node src/server.js"
   }
 }

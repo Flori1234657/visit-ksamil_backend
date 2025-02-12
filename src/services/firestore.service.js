@@ -1,3 +1,4 @@
+import NodeCache from "node-cache";
 import {
   getFirestore,
   collection,
@@ -14,10 +15,18 @@ import {
 import firebaseApp from "../config/firebase.config.js";
 
 const db = getFirestore(firebaseApp);
+const cache = new NodeCache({ stdTTL: 14 * 24 * 60 * 60 }); // 14 days TTL
 
 export const fetchPaginatedArticles = async (limitSize, lastDocId = null) => {
-  const articlesCollection = collection(db, "articles");
+  const cacheKey = `paginatedArticles:${limitSize}:${lastDocId || "firstPage"}`;
+  const cachedResult = cache.get(cacheKey);
 
+  if (cachedResult) {
+    console.log(`Cache hit for key: ${cacheKey}`);
+    return cachedResult;
+  }
+
+  const articlesCollection = collection(db, "articles");
   let articlesQuery;
 
   if (lastDocId) {
@@ -56,12 +65,25 @@ export const fetchPaginatedArticles = async (limitSize, lastDocId = null) => {
   });
 
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Last document in this batch
+  const result = { articles, lastDoc: lastVisible ? lastVisible.id : null };
+
+  // Cache the result
+  cache.set(cacheKey, result);
+  console.log(`Cache set for key: ${cacheKey}`);
 
   // Only return the document ID of the last document
-  return { articles, lastDoc: lastVisible ? lastVisible.id : null };
+  return result;
 };
 
 export const fetchArticleById = async (articleId) => {
+  const cacheKey = `article:${articleId}`;
+  const cachedArticle = cache.get(cacheKey);
+
+  if (cachedArticle) {
+    console.log(`Cache hit for key: ${cacheKey}`);
+    return cachedArticle;
+  }
+
   const articleRef = doc(db, "articles", articleId);
   const articleSnapshot = await getDoc(articleRef);
 
@@ -69,7 +91,13 @@ export const fetchArticleById = async (articleId) => {
     return null;
   }
 
-  return { id: articleSnapshot.id, ...articleSnapshot.data() };
+  const article = { id: articleSnapshot.id, ...articleSnapshot.data() };
+
+  // Cache the article
+  cache.set(cacheKey, article);
+  console.log(`Cache set for key: ${cacheKey}`);
+
+  return article;
 };
 
 export const fetchPaginatedAttractions = async (
