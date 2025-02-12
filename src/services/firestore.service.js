@@ -104,6 +104,16 @@ export const fetchPaginatedAttractions = async (
   limitSize,
   lastDocId = null
 ) => {
+  const cacheKey = `paginatedAttractions:${limitSize}:${
+    lastDocId || "firstPage"
+  }`;
+  const cachedAttraction = cache.get(cacheKey);
+
+  if (cachedAttraction) {
+    console.log(`Cache hit for key: ${cacheKey}`);
+    return cachedAttraction;
+  }
+
   const attractionsCollection = collection(db, "attractions");
 
   let attractionsQuery;
@@ -144,9 +154,14 @@ export const fetchPaginatedAttractions = async (
   });
 
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Last document in this batch
+  const result = { attractions, lastDoc: lastVisible ? lastVisible.id : null };
+
+  // Cache the result
+  cache.set(cacheKey, result);
+  console.log(`Cache set for key: ${cacheKey}`);
 
   // Only return the document ID of the last document
-  return { attractions, lastDoc: lastVisible ? lastVisible.id : null };
+  return result;
 };
 
 export const saveSubscription = async (email) => {
