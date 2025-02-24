@@ -1,7 +1,13 @@
 import { cache } from "../app.js";
 
-export const deleteAllCache = async (__, res) => {
+const API_KEY = process.env.CACHE_CLEAR_API_KEY || "your-secret-key";
+
+export const deleteAllCache = async (req, res) => {
   try {
+    const apiKey = req.headers["x-api-key"];
+    if (!apiKey || apiKey !== API_KEY)
+      return res.status(403).send("Forbidden: Invalid API Key");
+
     cache.flushAll(); // Clears all cached entries
 
     console.log("Cache successfully cleared");
