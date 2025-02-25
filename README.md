@@ -59,5 +59,6 @@ Follow these steps to set up the project locally.
 - **GET /articles/paginated?limitSize=3&lastDoc=article3**: Fetches the next set of articles starting from the document with ID article3.
 - **GET /articles/:id**: Fetch only a single article.
 - **POST /subscribe**
+- **DELETE /clear-cache/flush-all**: Clear server cache, provide also the **x-api-key** at headers
 
 ## Author -- Florian Dollani
