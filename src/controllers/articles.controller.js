@@ -1,6 +1,6 @@
 import {
   fetchPaginatedArticles,
-  fetchArticleById,
+  fetchArticleBySlug,
 } from "../services/firestore.service.js";
 
 export const getPaginatedArticles = async (req, res) => {
@@ -18,10 +18,10 @@ export const getPaginatedArticles = async (req, res) => {
   }
 };
 
-export const getArticleById = async (req, res) => {
+export const getArticleBySlug = async (req, res) => {
   try {
-    const { id } = req.params;
-    const article = await fetchArticleById(id);
+    const { slug } = req.params;
+    const article = await fetchArticleBySlug(slug);
 
     if (!article) {
       return res.status(404).json({ message: "Article not found" });
@@ -29,7 +29,7 @@ export const getArticleById = async (req, res) => {
 
     res.json(article);
   } catch (error) {
-    console.error("Error fetching article by ID:", error);
+    console.error("Error fetching article by SLUG:", error);
     res.status(500).send("Internal Server Error");
   }
 };

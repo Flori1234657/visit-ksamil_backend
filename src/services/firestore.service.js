@@ -74,8 +74,8 @@ export const fetchPaginatedArticles = async (limitSize, lastDocId = null) => {
   return result;
 };
 
-export const fetchArticleById = async (articleId) => {
-  const cacheKey = `article:${articleId}`;
+export const fetchArticleBySlug = async (articleSlug) => {
+  const cacheKey = `article:slug:${articleSlug}`;
   const cachedArticle = cache.get(cacheKey);
 
   if (cachedArticle) {
@@ -83,14 +83,16 @@ export const fetchArticleById = async (articleId) => {
     return cachedArticle;
   }
 
-  const articleRef = doc(db, "articles", articleId);
-  const articleSnapshot = await getDoc(articleRef);
+  const articlesRef = collection(db, "articles");
+  const q = query(articlesRef, where("slug", "==", articleSlug));
+  const querySnapshot = await getDocs(q);
 
-  if (!articleSnapshot.exists()) {
+  if (querySnapshot.empty) {
     return null;
   }
 
-  const article = { id: articleSnapshot.id, ...articleSnapshot.data() };
+  const articleDoc = querySnapshot.docs[0];
+  const article = { id: articleDoc.id, ...articleDoc.data() };
 
   // Cache the article
   cache.set(cacheKey, article);

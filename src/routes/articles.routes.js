@@ -1,12 +1,12 @@
 import express from "express";
 import {
   getPaginatedArticles,
-  getArticleById,
+  getArticleBySlug,
 } from "../controllers/articles.controller.js";
 
 const router = express.Router();
 
 router.get("/paginated", getPaginatedArticles);
-router.get("/:id", getArticleById);
+router.get("/:slug", getArticleBySlug);
 
 export default router;
